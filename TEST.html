@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Result Checker Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #result-section, #result-section * {
+                visibility: visible;
+            }
+            #result-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                box-shadow: none !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Header / Navbar -->
+    <header class="bg-blue-900 text-white shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white text-blue-900 font-bold p-2 rounded-lg text-lg">🏫</div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-wide">SUMMIT ACADEMY</h1>
+                    <p class="text-xs text-blue-200">Student Portal & Result Verification System</p>
+                </div>
+            </div>
+            <span class="text-xs bg-blue-800 px-3 py-1 rounded-full text-blue-200 font-medium">Portal v1.0</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 py-8 w-full flex-grow">
+
+        <!-- STEP 1: LOGIN / CHECKER FORM -->
+        <section id="login-section" class="bg-white rounded-xl shadow-md p-6 sm:p-8 max-w-lg mx-auto border border-slate-200">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-900">Check Your Result</h2>
+                <p class="text-sm text-slate-500 mt-1">Please enter your student credentials and scratch card PIN.</p>
+            </div>
+
+            <form id="result-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Student ID / Reg Number</label>
+                    <input type="text" id="studentId" required placeholder="e.g. STU/2026/001" 
+                        class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none uppercase text-sm">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Academic Session</label>
+                        <select id="session" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm bg-white">
+                            <option value="2025/2026">2025/2026 Academic Year</option>
+                            <option value="2026/2027">2026/2027 Academic Year</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Term / Semester</label>
+                        <select id="term" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm bg-white">
+                            <option value="First Term">First Term</option>
+                            <option value="Second Term">Second Term</option>
+                            <option value="Third Term">Third Term</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Scratch Card / Access PIN</label>
+                    <input type="password" id="pin" required placeholder="Enter access PIN" 
+                        class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm">
+                </div>
+
+                <button type="submit" 
+                    class="w-full bg-blue-900 hover:bg-blue-800 text-white font-medium py-3 rounded-lg transition shadow-md text-sm mt-2">
+                    Submit & View Result
+                </button>
+            </form>
+        </section>
+
+
+        <!-- STEP 2: RESULT DISPLAY SHEET (Hidden by Default) -->
+        <section id="result-section" class="hidden bg-white rounded-xl shadow-lg p-6 sm:p-10 border border-slate-200 max-w-3xl mx-auto">
+            
+            <!-- Report Card Header -->
+            <div class="border-b border-slate-200 pb-6 mb-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
+                <div>
+                    <h2 class="text-xl font-black text-blue-900 tracking-wider">SUMMIT ACADEMY</h2>
+                    <p class="text-xs text-slate-500">12 Education Avenue, Knowledge City</p>
+                    <h3 class="text-sm font-bold text-slate-700 mt-2 uppercase" id="display-term-session">FIRST TERM REPORT SHEET (2025/2026)</h3>
+                </div>
+                <div class="mt-4 sm:mt-0 w-20 h-20 bg-blue-50 border-2 border-dashed border-blue-300 rounded-full flex items-center justify-center text-blue-800 text-xs font-bold">
+                    PHOTO
+                </div>
+            </div>
+
+            <!-- Student Bio Data -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-lg mb-6 text-sm border border-slate-100">
+                <div>
+                    <span class="block text-xs text-slate-400 uppercase font-semibold">Student Name</span>
+                    <strong class="text-slate-900" id="res-name">Nick Uzoma</strong>
+                </div>
+                <div>
+                    <span class="block text-xs text-slate-400 uppercase font-semibold">Student ID</span>
+                    <strong class="text-slate-900" id="res-id">STU/2026/001</strong>
+                </div>
+                <div>
+                    <span class="block text-xs text-slate-400 uppercase font-semibold">Class</span>
+                    <strong class="text-slate-900" id="res-class">Senior Secondary 2</strong>
+                </div>
+                <div>
+                    <span class="block text-xs text-slate-400 uppercase font-semibold">Total Subjects</span>
+                    <strong class="text-slate-900" id="res-count">6</strong>
+                </div>
+            </div>
+
+            <!-- Grades Table -->
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-blue-900 text-white text-xs uppercase tracking-wider">
+                            <th class="p-3 rounded-l-lg">Subject</th>
+                            <th class="p-3 text-center">1st CA</th><th class="p-3 text-center">2nd CA</th>
+                            <th class="p-3 text-center">Exam</th>
+                            <th class="p-3 text-center">Total (100)</th>
+                            <th class="p-3 text-center">Grade</th>
+                            <th class="p-3 rounded-r-lg">Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody id="grades-table-body" class="divide-y divide-slate-100">
+                        <!-- Dynamic rows populated via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Summary Performance Card -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 bg-blue-50/50 p-4 rounded-lg border border-blue-100 text-sm">
+                <div>
+                    <span class="text-xs text-slate-500 uppercase font-semibold block">Cumulative Total</span>
+                    <strong class="text-lg text-blue-900" id="res-total">482 / 600</strong>
+                </div>
+                <div>
+                    <span class="text-xs text-slate-500 uppercase font-semibold block">Average Score</span>
+                    <strong class="text-lg text-blue-900" id="res-average">80.3%</strong>
+                </div>
+                <div>
+                    <span class="text-xs text-slate-500 uppercase font-semibold block">Overall Class Position</span>
+                    <strong class="text-lg text-emerald-700" id="res-position">Not available</strong>
+                </div>
+            </div>
+
+            <!-- Teacher & Principal Remarks -->
+            <div class="space-y-3 mb-8 text-xs sm:text-sm">
+                <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                    <span class="font-bold text-slate-700 block mb-1">Class Teacher's Remark:</span>
+                    <p class="text-slate-600 italic" id="res-teacher-remark">Not available</p>
+                </div>
+                <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                    <span class="font-bold text-slate-700 block mb-1">Principal's Comment:</span>
+                    <p class="text-slate-600 italic">Not available</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons (No Print) -->
+            <div class="flex flex-col sm:flex-row gap-3 no-print">
+                <button onclick="window.print()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg transition shadow text-sm flex items-center justify-center space-x-2">
+                    <span>🖨️ Print / Save as PDF</span>
+                </button>
+                <button onclick="goBack()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-6 py-2.5 rounded-lg transition text-sm">
+                    Check Another Result
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+        &copy; 2026 Summit Academy. All rights reserved.
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+      // Replace these two public values with your Supabase project details.
+      // NEVER put a service_role or secret key in this file.
+      const SUPABASE_URL = 'https://ecjymsrdtxgkrolifdji.supabase.co';
+      const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_uN2KPqxYcE1EC0x53fuQGA_Vc3L9rSx';
+
+      function getGradeDetails(score) {
+        if (score >= 70) return { grade: 'A', remark: 'Excellent' };
+        if (score >= 60) return { grade: 'B', remark: 'Very Good' };
+        if (score >= 50) return { grade: 'C', remark: 'Good' };
+        if (score >= 45) return { grade: 'D', remark: 'Fair' };
+        if (score >= 40) return { grade: 'E', remark: 'Pass' };
+        return { grade: 'F', remark: 'Fail' };
+      }
+
+      const form = document.getElementById('result-form');
+      const submitButton = form.querySelector('button[type="submit"]');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (SUPABASE_URL.includes('YOUR_PROJECT_REF') || SUPABASE_PUBLISHABLE_KEY === 'YOUR_PUBLISHABLE_KEY') {
+          alert('Add your Supabase Project URL and Publishable Key in the HTML file first.');
+          return;
+        }
+        const student_id = document.getElementById('studentId').value.trim().toUpperCase();
+        const pin = document.getElementById('pin').value.trim();
+        const session = document.getElementById('session').value;
+        const term = document.getElementById('term').value;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Checking result...';
+        try {
+          const response = await fetch(`${SUPABASE_URL.replace(/\/$/, '')}/functions/v1/check-student-result`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_PUBLISHABLE_KEY
+            },
+            body: JSON.stringify({ student_id, pin, session, term })
+          });
+          const result = await response.json();
+          if (!response.ok || !result.success) {
+            alert(result.message || 'Unable to verify result. Please check your details.');
+            return;
+          }
+          document.getElementById('res-name').textContent = result.student_name || '';
+          document.getElementById('res-id').textContent = result.student_id || '';
+          document.getElementById('res-class').textContent = result.student_class || '';
+          document.getElementById('display-term-session').textContent = `${result.term} REPORT SHEET (${result.session})`;
+          const tbody = document.getElementById('grades-table-body');
+          tbody.replaceChildren();
+          let sum = 0;
+          const subjects = Array.isArray(result.subjects) ? result.subjects : [];
+          for (const subject of subjects) {
+            const ca1 = Number(subject.ca1 ?? 0);
+            const ca2 = Number(subject.ca2 ?? 0);
+            const exam = Number(subject.exam ?? 0);
+            const total = Number(subject.total ?? ca1 + ca2 + exam);
+            sum += total;
+            const grade = getGradeDetails(total);
+            const row = document.createElement('tr');
+            row.className = 'border-b border-slate-100';
+            for (const value of [subject.name, ca1, ca2, exam, total, grade.grade, grade.remark]) {
+              const cell = document.createElement('td');
+              cell.className = 'p-3 text-center';
+              cell.textContent = String(value ?? '');
+              row.appendChild(cell);
+            }
+            tbody.appendChild(row);
+          }
+          document.getElementById('res-count').textContent = String(subjects.length);
+          document.getElementById('res-total').textContent = `${sum} / ${subjects.length * 100}`;
+          document.getElementById('res-average').textContent = subjects.length ? `${(sum / subjects.length).toFixed(1)}%` : 'N/A';
+          document.getElementById('res-position').textContent = 'Not available';
+          document.getElementById('res-teacher-remark').textContent = 'Not available';
+          document.getElementById('login-section').classList.add('hidden');
+          document.getElementById('result-section').classList.remove('hidden');
+        } catch (error) {
+          console.error('Result checker request failed', error);
+          alert('Connection failed. Check your Supabase URL, key and internet connection.');
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit & View Result';
+        }
+      });
+      function goBack() {
+        document.getElementById('result-section').classList.add('hidden');
+        document.getElementById('login-section').classList.remove('hidden');
+        form.reset();
+      }
+    </script>
+</body>
+</html>
